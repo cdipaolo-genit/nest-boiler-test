@@ -1,0 +1,6 @@
+* usar pipes para la validacion de request junto con zod
+* usar exception filters para el manejo y logueo de errores
+* usar gaurds para el manejo de roles
+* usar custom decorators para la parte de autenticacion
+* usar interceptors para filtrar y formatear la response 
+* agregar migraciones y seeders
