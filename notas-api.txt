@@ -4,3 +4,16 @@
 * usar custom decorators para la parte de autenticacion
 * usar interceptors para filtrar y formatear la response 
 * agregar migraciones y seeders
+* inclur test obligatorios junto con el husky
+* agregar distintas versiones de la api
+* agregar los custom paths de typescript
+* agregar swagger
+
+
+
+* agregar logica para filtros de strapi:
+    OK - basicos
+    - combinando relaciones
+    - or y and
+
+* agregar el populate como filtros de strapi
