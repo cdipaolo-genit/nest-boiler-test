@@ -2,7 +2,7 @@
 * usar exception filters para el manejo y logueo de errores
 * usar gaurds para el manejo de roles
 * usar custom decorators para la parte de autenticacion
-* usar interceptors para filtrar y formatear la response 
+OK * usar interceptors para filtrar y formatear la response 
 * agregar migraciones y seeders
 * inclur test obligatorios junto con el husky
 * agregar distintas versiones de la api
@@ -17,3 +17,12 @@
     - or y and
 
 * agregar el populate como filtros de strapi
+
+* agregar la validacion de paginacion en el interceptor
+
+# mejoras arquitectura
+
+
+* agrupar por modulos siguiendo el aptron service container
+* todo lo general va en commons, como pipes, interceptor y guards
+

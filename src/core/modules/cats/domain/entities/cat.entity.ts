@@ -1,5 +1,12 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Tag } from './tag.entity';
 
 @Entity()
 export class Cat extends BaseEntity {
@@ -18,4 +25,7 @@ export class Cat extends BaseEntity {
   @Column()
   @ApiProperty({ example: 'carei', description: 'The breed of the Cat' })
   breed: string;
+
+  @OneToMany(() => Tag, (tag) => tag.cat)
+  tags: Tag[];
 }

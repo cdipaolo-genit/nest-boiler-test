@@ -1,5 +1,5 @@
-import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
-import { ENUM_FILTERS } from 'src/domain/enum/api-filters.enum';
+import { Injectable, PipeTransform } from '@nestjs/common';
+import { ENUM_FILTERS } from 'src/core/commons/domain/enums/api-filters.enum';
 import {
   Equal,
   IsNull,
@@ -14,7 +14,7 @@ const ALLOWED_FILTERS = Object.values(ENUM_FILTERS);
 
 @Injectable()
 export class ValidateFiltersPipe implements PipeTransform {
-  transform(query: any, metadata: ArgumentMetadata) {
+  transform(query: any) {
     if (!query) return query;
 
     console.log('Validate filters:', query);

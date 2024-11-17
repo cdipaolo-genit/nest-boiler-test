@@ -4,6 +4,7 @@ import {
   DataSource,
   EntityTarget,
   FindOptionsOrder,
+  FindOptionsRelations,
   FindOptionsWhere,
   ObjectLiteral,
   Repository,
@@ -26,16 +27,23 @@ export class BaseRepository<T extends BaseEntity> {
     return await this.repository.findOne({ where: filters });
   }
 
-  async find(
-    filters: FindOptionsWhere<T>,
-    pagination?: IPagination,
-    sort?: FindOptionsOrder<T>,
-  ) {
+  async find({
+    filters,
+    pagination,
+    sort,
+    relations,
+  }: {
+    filters: FindOptionsWhere<T>;
+    pagination?: IPagination;
+    sort?: FindOptionsOrder<T>;
+    relations?: FindOptionsRelations<T>;
+  }) {
     const paginationParams = pagination ? pagination : {};
     return await this.repository.findAndCount({
       where: filters,
       ...paginationParams,
       order: sort,
+      relations,
     });
   }
 

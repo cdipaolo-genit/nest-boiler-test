@@ -5,9 +5,9 @@ import {
   GetAllCatsUseCase,
   GetOneCatUseCase,
   UpdateCatUseCase,
-} from '../../domain/usecases/cats/crud.usecase';
-import { CatRepository } from '../../domain/repositories/cat.repository';
-import { CatController } from '../controllers/cat.controller';
+} from './domain/usecases/crud-cat.usecase';
+import { CatRepository } from './domain/repositories/cat.repository';
+import { CatController } from './gateway/controllers/cat.controller';
 
 const useCases = [
   GetOneCatUseCase,

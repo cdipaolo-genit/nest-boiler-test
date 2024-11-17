@@ -1,14 +1,14 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { Cat } from '../../domain/entities/cat.entity';
-import { BaseController } from './base.controller';
+import { BaseController } from 'src/core/commons/gateway/controllers/base.controller';
 import {
   CreateCatUseCase,
   DeleteCatUseCase,
   GetAllCatsUseCase,
   GetOneCatUseCase,
   UpdateCatUseCase,
-} from 'src/domain/usecases/cats/crud.usecase';
-import { CreateCatDto } from 'src/domain/dtos/cat-create.dto';
+} from '../../domain/usecases/crud-cat.usecase';
+import { CreateCatDto } from '../../domain/dtos/cat-create.dto';
 import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('cats')

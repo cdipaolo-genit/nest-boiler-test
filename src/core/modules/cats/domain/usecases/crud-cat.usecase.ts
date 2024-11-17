@@ -5,9 +5,9 @@ import {
   CreateUseCase,
   UpdateUseCase,
   DeleteUseCase,
-} from '../base/crud.usecase';
-import { CatRepository } from 'src/domain/repositories/cat.repository';
-import { Cat } from 'src/domain/entities/cat.entity';
+} from 'src/core/commons/domain/usecases/crud.usecase';
+import { CatRepository } from '../repositories/cat.repository';
+import { Cat } from '../entities/cat.entity';
 
 @Injectable()
 export class CreateCatUseCase extends CreateUseCase<Cat> {

@@ -4,16 +4,13 @@ import {
   Post,
   Delete,
   Body,
-  Injectable,
   Param,
   ParseIntPipe,
-  Put,
   Query,
   UseInterceptors,
   Req,
   HttpCode,
-  HttpException,
-  HttpStatus,
+  Patch,
 } from '@nestjs/common';
 import {
   CreateUseCase,
@@ -21,14 +18,14 @@ import {
   GetAllUseCase,
   GetOneUseCase,
   UpdateUseCase,
-} from '../../domain/usecases/base/crud.usecase';
+} from 'src/core/commons/domain/usecases/crud.usecase';
 import { ValidateFiltersPipe } from '../pipes/validate-filters.pipe';
 import { ValidatePaginationPipe } from '../pipes/validate-pagination.pipe';
 import { ResponseInterceptor } from '../interceptors/paginated-response.interceptor';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ValidateSortPipe } from '../pipes/validate-sort.pipe';
+import { ValidatePopulationPipe } from '../pipes/validate-population.pipe';
 
-@Injectable()
 @UseInterceptors(ResponseInterceptor)
 export abstract class BaseController<T extends BaseEntity, CreateDto> {
   constructor(
@@ -39,7 +36,6 @@ export abstract class BaseController<T extends BaseEntity, CreateDto> {
     protected readonly updateUseCase: UpdateUseCase<T>,
   ) {}
 
-  // TODO: Add custom dto for swagger filters
   @Get()
   @ApiOperation({ summary: 'basic get all for this entity' })
   @ApiResponse({
@@ -50,38 +46,17 @@ export abstract class BaseController<T extends BaseEntity, CreateDto> {
     @Query('filters', ValidateFiltersPipe) filters: any,
     @Query('pagination', ValidatePaginationPipe) pagination: any,
     @Query('sort', ValidateSortPipe) sort: any,
+    @Query('relations', ValidatePopulationPipe) relations: any,
     @Req() req: any,
   ) {
-    const [data, total] = await this.getAllUseCase.execute(
+    const [data, total] = await this.getAllUseCase.execute({
       filters,
       pagination,
       sort,
-    );
+      relations,
+    });
 
-    pagination.total = total;
-
-    if (!(pagination?.skip + 1) || !pagination.take) return data;
-
-    const page = pagination.skip / pagination.take + 1;
-    const pageSize = pagination.take;
-
-    if (page * pageSize > total)
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          message: `The page ${page} is out of range`,
-          error: 'page_out_of_range',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-
-    req.pagination = {
-      total,
-      page,
-      pageSize,
-      next: (page + 1) * pageSize > total ? null : page + 1,
-      prev: page - 1 < 1 ? null : page - 1,
-    };
+    req.pagination = { ...pagination, total };
 
     return data;
   }
@@ -119,7 +94,7 @@ export abstract class BaseController<T extends BaseEntity, CreateDto> {
   }
 
   // TODO: add custom validation pipe based on entity
-  @Put(':id')
+  @Patch(':id')
   @ApiOperation({ summary: 'basic update for this entity' })
   @ApiResponse({
     status: 200,

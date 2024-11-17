@@ -1,9 +1,14 @@
-import { BaseUseCase } from '../base-use-case.interface';
-import { BaseEntity, FindOptionsOrder, FindOptionsWhere } from 'typeorm';
+import { BaseUseCase } from './base-use-case.interface';
+import {
+  BaseEntity,
+  FindOptionsOrder,
+  FindOptionsRelations,
+  FindOptionsWhere,
+} from 'typeorm';
 import {
   BaseRepository,
   IPagination,
-} from '../../repositories/base.repository';
+} from 'src/core/commons/domain/repositories/base.repository';
 
 export abstract class CreateUseCase<T extends BaseEntity>
   implements BaseUseCase
@@ -40,12 +45,13 @@ export abstract class GetAllUseCase<T extends BaseEntity>
 {
   constructor(private readonly repository: BaseRepository<T>) {}
 
-  async execute(
-    filters: FindOptionsWhere<T>,
-    pagination?: IPagination,
-    sort?: FindOptionsOrder<T>,
-  ): Promise<[T[], number]> {
-    return await this.repository.find(filters, pagination, sort);
+  async execute(params: {
+    filters: FindOptionsWhere<T>;
+    pagination?: IPagination;
+    sort?: FindOptionsOrder<T>;
+    relations?: FindOptionsRelations<T>;
+  }): Promise<[T[], number]> {
+    return await this.repository.find(params);
   }
 }
 

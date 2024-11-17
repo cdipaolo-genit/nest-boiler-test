@@ -1,8 +1,8 @@
-import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
+import { Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()
 export class ValidateSortPipe implements PipeTransform {
-  transform(query: any, metadata: ArgumentMetadata) {
+  transform(query: any) {
     if (!query) return query;
 
     console.log('Validate sort:', query);

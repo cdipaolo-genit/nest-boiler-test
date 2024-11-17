@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { TypeOrmConfigService } from './config/database.config';
-import { CatModule } from './gateways/modules/cat.module';
+import { CatModule } from './core/modules/cats/cat.module';
 
 @Module({
   imports: [
