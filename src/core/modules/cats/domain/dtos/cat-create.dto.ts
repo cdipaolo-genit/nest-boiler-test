@@ -10,7 +10,7 @@ export class CreateCatDto {
   @IsNotEmpty()
   @IsNumber()
   @ApiProperty({ example: 1, description: 'The age of the Cat' })
-  age: string;
+  age: number;
 
   @IsNotEmpty()
   @IsString()

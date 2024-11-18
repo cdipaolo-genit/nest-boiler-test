@@ -195,6 +195,10 @@ export class QueryBuilder<T extends BaseEntity> {
     this.query = this.repository.createQueryBuilder(this.alias);
   }
 
+  reset() {
+    this.query = this.repository.createQueryBuilder(this.alias);
+  }
+
   where(stmt: string, params: object) {
     if (this.firstWhere) {
       this.query.where(stmt, params);
@@ -223,7 +227,6 @@ export class QueryBuilder<T extends BaseEntity> {
   }
 
   addSort(sort: ISort) {
-    console.log(sort);
     Object.entries(sort).forEach(([field, order]) => {
       this.query.orderBy(`${this.alias}.${field}`, order);
     });
@@ -235,7 +238,7 @@ export class QueryBuilder<T extends BaseEntity> {
   }
 
   debugQuery() {
-    this.query.printSql();
+    return this.query.getQuery();
   }
 
   async execute() {

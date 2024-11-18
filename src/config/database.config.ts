@@ -19,7 +19,25 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: this.configService.get<string>('DB_DATABASE'),
       entities: [Cat, Tag, TagName], // TODO: config entitis generic
       synchronize: !this.configService.get<boolean>('PRODUCTION'),
-      logging: ['query'],
+      // logging: ['query'],
+    };
+  }
+}
+
+@Injectable()
+export class TestTypeOrmConfigService implements TypeOrmOptionsFactory {
+  constructor(private configService: ConfigService) {}
+
+  createTypeOrmOptions(): TypeOrmModuleOptions {
+    return {
+      type: 'postgres',
+      host: this.configService.get<string>('DB_HOST'),
+      port: this.configService.get<number>('DB_PORT'),
+      username: this.configService.get<string>('DB_USER'),
+      password: this.configService.get<string>('DB_PASSWORD'),
+      database: 'test',
+      entities: [Cat, Tag, TagName],
+      synchronize: true,
     };
   }
 }

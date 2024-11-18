@@ -18,6 +18,6 @@ export class Tag extends BaseEntity {
   @JoinColumn()
   tagName: TagName;
 
-  @ManyToOne(() => Cat)
+  @ManyToOne(() => Cat, { cascade: true })
   cat: Cat;
 }

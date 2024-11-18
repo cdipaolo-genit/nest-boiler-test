@@ -13,7 +13,7 @@ export abstract class CreateUseCase<T extends BaseEntity>
 {
   constructor(private readonly repository: BaseRepository<T>) {}
 
-  async execute(doc: T): Promise<T | null> {
+  async execute(doc: T): Promise<T> {
     return await this.repository.create(doc);
   }
 }
