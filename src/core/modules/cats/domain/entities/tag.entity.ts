@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -14,7 +15,8 @@ export class Tag extends BaseEntity {
   id: number;
 
   @OneToOne(() => TagName)
-  name: TagName;
+  @JoinColumn()
+  tagName: TagName;
 
   @ManyToOne(() => Cat)
   cat: Cat;

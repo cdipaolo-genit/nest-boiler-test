@@ -4,6 +4,8 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
+import { QueryParserPipe } from './core/commons/gateway/pipes/qs-parser.pipe';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -18,7 +20,16 @@ async function bootstrap() {
 
   SwaggerModule.setup('docs', app, documentFactory);
 
-  app.useGlobalPipes(new ValidationPipe()); // add validation for dtos
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  ); // add validation for dtos
+
+  app.useGlobalPipes(new QueryParserPipe()); // extend depth default of qs for query params
 
   await app.listen(process.env.PORT ?? 3000);
 }

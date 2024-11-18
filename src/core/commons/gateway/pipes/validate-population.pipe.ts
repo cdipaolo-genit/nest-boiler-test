@@ -7,12 +7,6 @@ export class ValidatePopulationPipe implements PipeTransform {
 
     console.log('Validate populate:', query);
 
-    const relations: { [key: string]: boolean } = {};
-
-    query.split(',').forEach((name: string) => {
-      relations[name] = true;
-    });
-
-    return relations;
+    return query;
   }
 }

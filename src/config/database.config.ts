@@ -17,8 +17,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: this.configService.get<string>('DB_USER'),
       password: this.configService.get<string>('DB_PASSWORD'),
       database: this.configService.get<string>('DB_DATABASE'),
-      entities: [Cat, Tag, TagName],
+      entities: [Cat, Tag, TagName], // TODO: config entitis generic
       synchronize: !this.configService.get<boolean>('PRODUCTION'),
+      logging: ['query'],
     };
   }
 }

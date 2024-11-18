@@ -3,24 +3,29 @@ import {
   BaseEntity,
   DataSource,
   EntityTarget,
-  FindOptionsOrder,
-  FindOptionsRelations,
   FindOptionsWhere,
   ObjectLiteral,
   Repository,
 } from 'typeorm';
-
-export interface IPagination {
-  skip: number;
-  take: number;
-}
+import {
+  QueryBuilder,
+  QueryBuilderDirector,
+} from '../services/query-builder.service';
+import {
+  ApiFilterQuery,
+  ApiRelationFilter,
+  IPagination,
+  ISort,
+} from '../types/filter.type';
 
 @Injectable()
 export class BaseRepository<T extends BaseEntity> {
   protected repository: Repository<T>;
+  protected alias = '';
 
   constructor(entity: EntityTarget<T>, dataSource: DataSource) {
     this.repository = dataSource.getRepository(entity);
+    this.alias = dataSource.getMetadata(entity).name;
   }
 
   async findOne(filters: FindOptionsWhere<T>) {
@@ -30,21 +35,29 @@ export class BaseRepository<T extends BaseEntity> {
   async find({
     filters,
     pagination,
-    sort,
     relations,
+    sort,
   }: {
-    filters: FindOptionsWhere<T>;
+    filters?: ApiFilterQuery;
     pagination?: IPagination;
-    sort?: FindOptionsOrder<T>;
-    relations?: FindOptionsRelations<T>;
+    relations?: ApiRelationFilter;
+    sort?: ISort;
   }) {
-    const paginationParams = pagination ? pagination : {};
-    return await this.repository.findAndCount({
-      where: filters,
-      ...paginationParams,
-      order: sort,
-      relations,
-    });
+    const qb = new QueryBuilder(this.repository, this.alias);
+    const director = new QueryBuilderDirector(qb, this.alias);
+
+    if (relations && Object.keys(relations).length > 0)
+      director.loadRelations(relations);
+    if (filters && Object.keys(filters).length > 0)
+      director.makeQueryFromQueryFilters(filters);
+    if (pagination && Object.keys(pagination).length > 0)
+      director.addPagination(pagination.skip, pagination.take);
+    if (sort && Object.keys(sort).length > 0) director.addSort(sort);
+
+    const res = await qb.execute();
+    const count = await qb.count();
+
+    return [res, count] as any;
   }
 
   async create(doc: T) {

@@ -25,6 +25,12 @@ import { ResponseInterceptor } from '../interceptors/paginated-response.intercep
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ValidateSortPipe } from '../pipes/validate-sort.pipe';
 import { ValidatePopulationPipe } from '../pipes/validate-population.pipe';
+import {
+  ApiFilterQuery,
+  ApiRelationFilter,
+  IPagination,
+  ISort,
+} from '../../domain/types/filter.type';
 
 @UseInterceptors(ResponseInterceptor)
 export abstract class BaseController<T extends BaseEntity, CreateDto> {
@@ -43,10 +49,10 @@ export abstract class BaseController<T extends BaseEntity, CreateDto> {
     description: 'The found records with metadada for pagination',
   })
   async findAll(
-    @Query('filters', ValidateFiltersPipe) filters: any,
-    @Query('pagination', ValidatePaginationPipe) pagination: any,
-    @Query('sort', ValidateSortPipe) sort: any,
-    @Query('relations', ValidatePopulationPipe) relations: any,
+    @Query('filters', ValidateFiltersPipe) filters: ApiFilterQuery,
+    @Query('pagination', ValidatePaginationPipe) pagination: IPagination,
+    @Query('sort', ValidateSortPipe) sort: ISort,
+    @Query('relations', ValidatePopulationPipe) relations: ApiRelationFilter,
     @Req() req: any,
   ) {
     const [data, total] = await this.getAllUseCase.execute({

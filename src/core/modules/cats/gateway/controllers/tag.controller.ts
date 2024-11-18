@@ -12,8 +12,8 @@ import {
   UpdateTagUseCase,
 } from '../../domain/usecases/crud-tag.usecase';
 
-@Controller('cats')
-export class CatController extends BaseController<Tag, CreateTagDto> {
+@Controller('tags')
+export class TagController extends BaseController<Tag, CreateTagDto> {
   constructor(
     getOneUseCase: GetOneTagUseCase,
     getAllUseCase: GetAllTagsUseCase,

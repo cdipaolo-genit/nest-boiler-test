@@ -8,3 +8,8 @@ export enum ENUM_FILTERS {
   IS_NULL = '$null',
   IS_NOT_NULL = '$notNull',
 }
+
+export enum ENUM_LOGICAL_OPERATORS {
+  AND = '$and',
+  OR = '$or',
+}

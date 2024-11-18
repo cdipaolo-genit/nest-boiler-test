@@ -19,8 +19,6 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
   ): Observable<Response<T>> {
     const req = context.switchToHttp().getRequest();
 
-    console.log(req);
-
     return next.handle().pipe(
       map((data) => {
         const pagination = req.pagination;
