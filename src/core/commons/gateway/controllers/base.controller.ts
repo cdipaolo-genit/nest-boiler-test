@@ -11,6 +11,7 @@ import {
   Req,
   HttpCode,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import {
   CreateUseCase,
@@ -31,8 +32,11 @@ import {
   IPagination,
   ISort,
 } from '../../domain/types/filter.type';
+import { Roles } from '../guards/roles.decorator';
+import { RolesGuard } from '../guards/roles.guard';
 
 @UseInterceptors(ResponseInterceptor)
+@UseGuards(RolesGuard)
 export abstract class BaseController<T extends BaseEntity, CreateDto> {
   constructor(
     protected readonly getOneUseCase: GetOneUseCase<T>,
@@ -63,6 +67,8 @@ export abstract class BaseController<T extends BaseEntity, CreateDto> {
     });
 
     req.pagination = { ...pagination, total };
+
+    console.log('USER DESDE EL BASE REPO: ', req.user);
 
     return data;
   }

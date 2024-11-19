@@ -10,6 +10,7 @@ import {
 } from '../../domain/usecases/crud-cat.usecase';
 import { CreateCatDto } from '../../domain/dtos/cat-create.dto';
 import { ApiResponse } from '@nestjs/swagger';
+import { Roles } from 'src/core/commons/gateway/guards/roles.decorator';
 
 @Controller('cats')
 export class CatController extends BaseController<Cat, CreateCatDto> {
@@ -35,6 +36,7 @@ export class CatController extends BaseController<Cat, CreateCatDto> {
     description: 'The record that was created',
     type: Cat,
   })
+  @Roles(['ADMIN'])
   async create(@Body() doc: CreateCatDto) {
     return await this.createUseCase.execute(doc as any);
   }
